@@ -3,14 +3,14 @@ import logo from '../../public/crack_Logo.png'
 import Image from 'next/image'
 const Footer = () => {
   return (
-        <div className='bg-white w-full flex flex-col items-center justify-center '>
+        <div className='bg-[#181d14] text-white w-full flex flex-col items-center justify-center '>
           <div className='flex justify-between items-start w-[1200px] h-[250px] py-16'>
             
             <div className='flex items-center h-full'>
                 <Image  src={logo} alt='crackLogo' className='w-[60px] h-[100px] object-cover'/>
                 <p className='flex flex-col justify-center'>
-                    <span className='font-bold text-2xl leading-[1] text-[#4c4c4f]'>Cracke</span> 
-                    <span className='text-[#749c94] font-semibold'>Downloader</span>    
+                    <span className='font-bold text-2xl leading-[1]'>Cracke</span> 
+                    <span className='font-semibold'>Downloader</span>    
                 </p>
             </div>
 
@@ -39,7 +39,7 @@ const Footer = () => {
 
           </div>
 
-          <p className='bg-[#749c94] py-4 w-full text-center'>All Rights Reserved © 2024 Copyright: Cracks Downloader</p>
+          <p className='bg-[#232e24] py-4 w-full text-center'>All Rights Reserved © 2024 Copyright: Cracks Downloader</p>
         </div>
   )
 }

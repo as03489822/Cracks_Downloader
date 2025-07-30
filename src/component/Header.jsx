@@ -10,8 +10,8 @@ import data from "@/data/cracksSoftwares"
 const Header = () => {
     const navList = [{page:'Home' , path: '/'},{page:'Contact Us' , path: '/contactus'},]
   return (
-    <div className='bg-white w-full flex flex-col items-center  justify-center  '>
-        <div className='bg-[#749c94] w-full overflow-hidden'>
+    <div className='bg-[#181D14] w-full flex flex-col items-center  justify-center text-white '>
+        <div className='bg-[#232e24]  w-full overflow-hidden'>
             <ul className=' flex gap-10 list-disc py-2 animate-marquee'>
             {
                 data?.map((item , index)=>
@@ -25,15 +25,15 @@ const Header = () => {
         <div className='flex items-center'>
             <Image  src={logo} alt='crackLogo' className='w-[60px] h-[100px] object-cover'/>
             <p className='flex flex-col justify-center'>
-                <span className='font-bold text-2xl leading-[1] text-[#4c4c4f]'>Cracke</span> 
-                <span className='text-[#749c94] font-semibold'>Downloader</span>    
+                <span className='font-bold text-2xl leading-[1] '>Cracke</span> 
+                <span className=' font-semibold'>Downloader</span>    
             </p>
         </div>
         {/* buttons */}
         <nav className='flex gap-5 '>
             {
                 navList?.map((element , index) =>
-                <li className='list-none font-semibold text-[#4c4c4f]' key={index}>
+                <li className='list-none font-semibold ' key={index}>
                     {element.page}
                 </li>
                 )
@@ -44,7 +44,7 @@ const Header = () => {
         <input
             type="text"
             placeholder="Search..."
-            className="outline-none pl-3 py-3 w-full  h-full"
+            className="outline-none pl-3 py-3 w-full  h-full placeholder-white"
         />
         <span className="bg-[#749c94] border border-[#749c94] rounded-r flex justify-center items-center h-[30px] w-[40px]">
             <FaSearch className="text-white" />
