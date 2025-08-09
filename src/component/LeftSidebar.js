@@ -6,14 +6,8 @@ import { useRouter } from "next/navigation";
 import { FiSettings } from "react-icons/fi";
 import { MdDashboard, MdOutlineContactMail, MdLogout } from "react-icons/md";
 import {
-  FaExchangeAlt,
   FaPlus,
-  FaChartBar,
-  FaPiggyBank,
   FaUser,
-  FaUserAlt,
-  FaRegFileAlt,
-  FaHistory,
 } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
