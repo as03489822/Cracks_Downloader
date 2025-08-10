@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/helpers/mailer";
 import bcryptjs from 'bcryptjs'
 
-connectDB()
 
-export async function POST({request: NextRequest}) {
+export async function POST(request) {
     try {
+        await connectDB();
         const reqBody = request.json();
         const { username , email , password} = reqBody;
         // Validation
@@ -16,7 +16,7 @@ export async function POST({request: NextRequest}) {
         const user = await user.findOne({email});
         
         if(!user){
-            return NextRequest.json({message:"User already exists"},{status:400})
+            return NextResponse.json({message:"User already exists"},{status:400})
         }
         
         const salt = await bcryptjs.getSalt(10);
@@ -33,9 +33,9 @@ export async function POST({request: NextRequest}) {
 
         await sendEmail({email , emailType:"VERIFY" , userId: savedUser._id})
 
-        return NextRequest.json({message : "User regester successfully" , success: true , savedUser},{status:200})
+        return NextResponse.json({message : "User regester successfully" , success: true , savedUser},{status:200})
 
     } catch (error) {
-        return NextRequest.json({message : error},{status:500})
+        return NextResponse.json({message : error},{status:500})
     }
 }

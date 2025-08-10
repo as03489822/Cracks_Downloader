@@ -92,7 +92,7 @@
       });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
       e.preventDefault();
       const dataToSend = {
         ...form,
@@ -106,7 +106,18 @@
       }
 
       console.log("Submitting Crack Data & File:", file);
-      // Here, you could POST this to your API
+      try {
+        const res = await fetch('/api/cracks', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error('Failed to add crack');
+        const data = await res.json();
+        console.log('Crack added:', data);
+      } catch (err) {
+        console.error('Error submitting crack:', err);
+      }
     };
 
     return (
