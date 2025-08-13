@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import path from 'path';
-import connectDB from '@/lib/db';
-import Crack from '@/models/Crack'; // Your Mongoose model
+import {connectDB} from '@/dbConfig/dbConfig';
+import Crack from '@/models/Crack';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -12,12 +12,14 @@ export const POST = async (req) => {
     const formData = await req.formData();
     const data = JSON.parse(formData.get('data'));
     const crackFile = formData.get('crackFile');
+    const crackImage = formData.get('crackImage');
 
     let filePath = null;
-
+    let imagePath = null;
+    let fileName;
     if (crackFile && crackFile.size > 0) {
       const buffer = Buffer.from(await crackFile.arrayBuffer());
-      const fileName = `${uuidv4()}-${crackFile.name}`;
+       fileName = `${uuidv4()}-${crackFile.name}`;
       const uploadPath = path.join(process.cwd(), 'public', 'uploads', fileName);
       await writeFile(uploadPath, buffer);
       filePath = `/uploads/${fileName}`;
@@ -27,17 +29,42 @@ export const POST = async (req) => {
       // filePath = result.secure_url;
     }
 
-    // Save to DB
+    if (crackImage && crackImage.size > 0) {
+      const buffer = Buffer.from(await crackImage.arrayBuffer());
+      fileName = fileName + "-image"
+      const uploadPath = path.join(process.cwd(), 'public', 'uploads', fileName);
+      await writeFile(uploadPath, buffer);
+      imagePath = `/uploads/${fileName}`;
+    }
     const newCrack = await Crack.create({
       ...data,
       crackFileUrl: filePath,
+      imageUrl:imagePath
     });
+    console.log(newCrack)
 
     return NextResponse.json(newCrack, { status: 201 });
   } catch (error) {
     console.error('Error creating crack:', error);
     return NextResponse.json(
       { message: 'Error creating crack', error: error.message },
+      { status: 500 }
+    );
+  }
+};
+
+
+// GET all cracks
+export const GET = async (req) => {
+  try {
+    await connectDB();
+    const cracks = await Crack.find().sort({ createdAt: -1 });
+
+    return NextResponse.json(cracks, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching cracks:', error);
+    return NextResponse.json(
+      { message: 'Error fetching cracks', error: error.message },
       { status: 500 }
     );
   }

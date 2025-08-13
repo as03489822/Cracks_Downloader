@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Poppins, Syne } from 'next/font/google';
-
+import { AuthProvider } from "@/context/AuthContext";
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['100','200','300','400','500','600','700','800','900'],
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${syne.variable}`}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

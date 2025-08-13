@@ -8,7 +8,7 @@ const CrackSchema = new mongoose.Schema(
     comments: Number,
     category: String,
     tags: [String],
-    image: String,
+    imageUrl: String,
     shortDescription: String,
     fullDescription: String,
     slug: String,

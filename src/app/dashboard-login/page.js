@@ -32,10 +32,9 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://eb-project-backend-production.up.railway.app/api/v0/user/loginUser",
+        "api/users/login",
         {
           method: "POST",
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         }
       );

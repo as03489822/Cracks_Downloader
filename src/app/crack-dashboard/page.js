@@ -1,6 +1,9 @@
 "use client"
 // import { useEffect } from 'react'
 import LeftSidebar from '@/component/LeftSidebar'
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
 //   const nav = useNavigate();
@@ -10,6 +13,16 @@ const Dashboard = () => {
 //     if(!token){
 //       nav("/")
 //     }})
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/dashboard-login");
+    }
+  }, [loading, user, router]);
+
+  if (loading) return <p>Loading...</p>;
   return (
     <div className='flex h-screen text-white'>
       <LeftSidebar className="w-64" />

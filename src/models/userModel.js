@@ -3,17 +3,18 @@ import { unique } from "next/dist/build/utils"
 const userSchema = new mongoose.Schema({
     username:{
         type: String,
-        require: [true , "Please provide an username"],
+        require: true,
         unique: true
     },
     email:{
         type: String,
-        require: [true , "Please provide an email"],
+        require: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
-        require: [true , "Please provide an password"],
+        required: true,
+        select: false
     },
     isVerified:{
         type: Boolean,
