@@ -35,6 +35,12 @@ const CrackSchema = new mongoose.Schema(
       },
     },
     crackFileUrl: String,
+    reviews : [
+      {
+          type : mongoose.Schema.Types.ObjectId,
+          ref : "Review",
+      },
+    ],
   },
   { timestamps: true }
 );
