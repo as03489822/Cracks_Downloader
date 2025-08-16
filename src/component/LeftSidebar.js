@@ -10,6 +10,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -28,9 +29,20 @@ const Sidebar = () => {
   ];
 
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    router.push("/"); // Go back to login/home
+    try {
+      const response = fetch('/api/auth/logout' , {
+        method:'POST'
+      })
+      if(!response.ok){
+        toast.error('Please Try Again');
+        return
+      }
+      toast.success("Logout Successfully");
+      router.push('/dashboard-login');
+    } catch (error) {
+      console.log(error);
+      toast.error("something wend worong with logout")
+    }
   };
 
   const linkClasses = (path) =>

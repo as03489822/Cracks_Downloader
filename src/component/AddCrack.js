@@ -109,11 +109,16 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
         method: 'PUT',
         body: formData,
       });
-      if (!res.ok) throw new Error('Failed to updated crack');
-      const data = await res.json();
-      console.log('Crack updated:', data);
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.error);
+        return;
+      }
+
+      toast.success(data.message);
+      router.push("/crack-dashboard/crack");
     } catch (err) {
-      console.error('Error updating crack:', err);
+      toast.error('Error updating crack');
     }
   };
 

@@ -2,40 +2,35 @@ import { NextResponse } from "next/server";
 import User from  '@/models/userModel'; 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { z } from "zod";
-import dbConnect from "@/dbConfig/dbConfig";    
-
-const LoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+import {connectDB} from "@/dbConfig/dbConfig";    
 
 export async function POST(req) {
   try {
-    await dbConnect();
+    await connectDB();
 
     const body = await req.json();
-    const parsed = LoginSchema.safeParse(body);
-    if (!parsed.success) {
+
+    const { email, password } = body;
+
+    if(!email || !password){
       return NextResponse.json(
-        { error: "Invalid payload", details: parsed.error.flatten() },
-        { status: 400 }
-      );
+        {error : "Email and Passwor are requiered"}
+      )
     }
-    const { email, password } = parsed.data;
+
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return NextResponse.json(
-        { error: "Invalid email or password" },
+        { error: "Invalid email" },
         { status: 401 }
       );
     }
 
-    const ok = await bcrypt.compare(password, user.password);
+    const ok = await bcrypt.compare(password , user.password);
     if (!ok) {
       return NextResponse.json(
-        { error: "Invalid email or password" },
+        { error: "Invalid password" },
         { status: 401 }
       );
     }
@@ -53,6 +48,7 @@ export async function POST(req) {
     const res = NextResponse.json(
       {
         success: true,
+        message:"Login Successfully!",
         user: {
           id: user._id.toString(),
           name: user.username || user.name || "",
@@ -75,7 +71,7 @@ export async function POST(req) {
   } catch (err) {
     console.error(err);
     return NextResponse.json(
-      { error: "Server error" },
+      { error: "Server error" , detail: err},
       { status: 500 }
     );
   }

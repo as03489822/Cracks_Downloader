@@ -62,7 +62,7 @@ export async function PUT(req, { params }) {
     )
     console.log(newCrack);
 
-    return NextResponse.json({ success: true, updatedCrack });
+    return NextResponse.json({ success: true , message:'Crack Updated Successfully', updatedCrack });
   } catch (err) {
     console.error('Error updating crack:', err);
     return NextResponse.json({ error: 'Failed to update crack' }, { status: 500 });
@@ -92,7 +92,7 @@ export async function DELETE (req , {params}) {
 
     const deleted = Crack.findByIdAndDelete(id);
     
-    NextResponse({success: true } , {status: 200})
+    NextResponse({success: true  , message:'Crack deleted successfully'} , {status: 200})
   } catch (error) {
     NextResponse({error: 'internal Server Error'} , { status: 500})
   }

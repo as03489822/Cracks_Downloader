@@ -1,9 +1,10 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LeftSidebar from '@/component/LeftSidebar';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+
 const AddCrack = () => {
     const { user, loading } = useAuth();
     const router = useRouter();
@@ -118,15 +119,20 @@ const AddCrack = () => {
         method: 'POST',
         body: formData,
       });
-      if (!res.ok) throw new Error('Failed to add crack');
-      const data = await res.json();
-      console.log('Crack added:', data);
+      const data = res.json();
+      if (!response.ok) {
+        toast.error(data.error);
+        return;
+      }
+      toast.success(data.message);
+      router.push("/crack-dashboard/cracks");
     } catch (err) {
+      toast.error("Something went wrong. Please try again later.");
       console.error('Error submitting crack:', err);
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return ;
   return (
     <div className='flex h-screen text-white'>
       <LeftSidebar className="w-64" />

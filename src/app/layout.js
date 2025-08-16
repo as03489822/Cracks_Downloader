@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Poppins, Syne } from 'next/font/google';
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from 'react-toastify';
+
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['100','200','300','400','500','600','700','800','900'],
@@ -26,7 +28,34 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${syne.variable}`}
       >
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          closeButton={false}
+          limit={3}
+          toastStyle={{
+            fontSize: '11px',
+            fontFamily: 'Arial, sans-serif',
+            color: 'white',
+            width: '220px',
+            minHeight: '40px',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            transition: 'all 0.8s ease',
+          }}
+        />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

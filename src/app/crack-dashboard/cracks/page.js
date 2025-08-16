@@ -3,6 +3,7 @@ import LeftSidebar from '@/component/LeftSidebar'
 import { FaEdit , FaTrash } from 'react-icons/fa'
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
+import { useAuth } from '@/context/AuthContext';
 
 const Cracks = () => {
   const router = useRouter();
@@ -40,15 +41,18 @@ const Cracks = () => {
         method: 'POST',
         body: formData,
       });
+      const data = res.json();
       if(res.ok){
-        console.log("deleted Successfully")  
+        toast.error(data.error);
+        return  
       }
+      toast.success(data.message)
     } catch (error) {
-      console.log(error)
+      toast.error("something went wrong with delete crack")
     }
   }
   
-    if (loading) return <p>Loading...</p>;
+    if (loading) return ;
   return (
     <div className='flex h-screen text-white'>
       <LeftSidebar className="w-64" />

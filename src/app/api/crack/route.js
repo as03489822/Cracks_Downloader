@@ -43,9 +43,8 @@ export const POST = async (req) => {
     });
     console.log(newCrack)
 
-    return NextResponse.json(newCrack, { status: 201 });
+    return NextResponse.json({newCrack, message: "Crack Added Successfully"} ,{ status: 201 });
   } catch (error) {
-    console.error('Error creating crack:', error);
     return NextResponse.json(
       { message: 'Error creating crack', error: error.message },
       { status: 500 }
@@ -62,10 +61,10 @@ export const GET = async (req) => {
 
     return NextResponse.json(cracks, { status: 200 });
   } catch (error) {
-    console.error('Error fetching cracks:', error);
     return NextResponse.json(
       { message: 'Error fetching cracks', error: error.message },
       { status: 500 }
     );
   }
 };
+

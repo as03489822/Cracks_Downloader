@@ -2,17 +2,10 @@
 // import { useEffect } from 'react'
 import LeftSidebar from '@/component/LeftSidebar'
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const Dashboard = () => {
-//   const nav = useNavigate();
-//   useEffect(() =>{
-//     const token = localStorage.getItem("token")
-
-//     if(!token){
-//       nav("/")
-//     }})
   const { user, loading } = useAuth();
   const router = useRouter();
 
