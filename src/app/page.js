@@ -1,11 +1,9 @@
 'use client'
 import Footer from "@/component/Footer";
 import Header from "@/component/Header"
-import data from "@/data/cracksSoftwares"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Cracks from "./crack-dashboard/cracks/page";
 
 export default function Home() {
   const Categories = ["Downloader" ,"File Extractor", "PC" , "Utility" , "Uninstaller" ]
