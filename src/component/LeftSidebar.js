@@ -4,17 +4,18 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiSettings } from "react-icons/fi";
-import { MdDashboard, MdOutlineContactMail, MdLogout } from "react-icons/md";
+import { MdDashboard, MdOutlineContactMail, MdLogout } from "react-icons/md"
 import {
   FaPlus,
   FaUser,
 } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
-
+import { useAuth } from "@/context/AuthContext";
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const {setUser} = useAuth();
 
   const menu = [
     { path: "/crack-dashboard", label: "Dashboard", icon: <MdDashboard /> },
@@ -28,22 +29,35 @@ const Sidebar = () => {
     // { path: "/history", label: "History", icon: <FaHistory /> },
   ];
 
-  const logout = () => {
+const logout = async () => {
+  try {
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    let data;
     try {
-      const response = fetch('/api/auth/logout' , {
-        method:'POST'
-      })
-      if(!response.ok){
-        toast.error('Please Try Again');
-        return
-      }
-      toast.success("Logout Successfully");
-      router.push('/dashboard-login');
-    } catch (error) {
-      console.log(error);
-      toast.error("something wend worong with logout")
+      data = await response.json();
+    } catch {
+      // fallback if server didn't send JSON
+      toast.error("Invalid server response");
+      return;
     }
-  };
+
+    if (!response.ok) {
+      toast.error(data.message || "Please Try Again");
+      return;
+    }
+
+    toast.success(data.message || "Logout Successfully");
+    setUser(null);
+    router.push("/dashboard-login");
+  } catch (error) {
+    console.error("Logout error:", error);
+    toast.error("Something went wrong with logout");
+  }
+};
+
 
   const linkClasses = (path) =>
     `flex items-center gap-2 p-2 rounded-md transition-all ${
