@@ -4,6 +4,7 @@ import { FaEdit , FaTrash } from 'react-icons/fa'
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Cracks = () => {
   const router = useRouter();
@@ -35,22 +36,27 @@ const Cracks = () => {
     router.push(`/crack-dashboard/add-crack/${id}`)
   }
   
-  const deleteClick = async(id) =>{
-    try {
-      const res = await fetch(`/api/crack/${id}`, {
-        method: 'POST',
-        body: formData,
-      });
-      const data = res.json();
-      if(res.ok){
-        toast.error(data.error);
-        return  
-      }
-      toast.success(data.message)
-    } catch (error) {
-      toast.error("something went wrong with delete crack")
+const deleteClick = async (id) => {
+  try {
+    const res = await fetch(`/api/crack/${id}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast.error(data.error || "Failed to delete crack");
+      return;
     }
+
+    setCracks((prev) => prev.filter((crack) => crack._id !== id));
+
+    toast.success(data.message || "Crack deleted successfully");
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong while deleting crack");
   }
+};
+
   
     if (loading) return ;
   return (

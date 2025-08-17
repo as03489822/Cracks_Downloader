@@ -4,7 +4,6 @@ import { writeFile, unlink } from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 import { connectDB } from '@/dbConfig/dbConfig';
 import Crack from '@/models/Crack';
-import { Stats } from 'fs';
 
 export async function PUT(req, { params }) {
   try {
@@ -60,9 +59,8 @@ export async function PUT(req, { params }) {
       }, // update object
       { new: true, runValidators: true } 
     )
-    console.log(newCrack);
 
-    return NextResponse.json({ success: true , message:'Crack Updated Successfully', updatedCrack });
+    return NextResponse.json({ success: true , message:'Crack Updated Successfully', newCrack });
   } catch (err) {
     console.error('Error updating crack:', err);
     return NextResponse.json({ error: 'Failed to update crack' }, { status: 500 });
@@ -85,15 +83,32 @@ export async function GET(req , {params}){
   }
 }
 
-export async function DELETE (req , {params}) {
+
+export async function DELETE(req, { params }) {
   try {
     await connectDB();
-    const {id} = await params;
+    const { id } = await params;  
 
-    const deleted = Crack.findByIdAndDelete(id);
-    
-    NextResponse({success: true  , message:'Crack deleted successfully'} , {status: 200})
+    console.log("Deleting crack with ID:", id);
+
+    const deletedCrack = await Crack.findByIdAndDelete(id);
+
+    if (!deletedCrack) {
+      return NextResponse.json(
+        { success: false, message: "Crack not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, message: "Crack deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
-    NextResponse({error: 'internal Server Error'} , { status: 500})
+    console.error("Error deleting crack:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error", details: error.message },
+      { status: 500 }
+    );
   }
 }

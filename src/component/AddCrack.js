@@ -1,5 +1,7 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const AddCrack = ({ initialData, mode = 'add' }) => {
   const [form, setForm] = useState({
@@ -36,10 +38,10 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
       },
     },
   });
-
+  const [loading , setLoading] = useState(false)
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
-
+  const router = useRouter()
   // Pre-fill form if editing
   useEffect(() => {
     if (mode === 'edit' && initialData) {
@@ -93,7 +95,7 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form)
+    setLoading(true)
     const dataToSend = {
       ...form,
       tags: !Array.isArray(form.tags) && tags.length > 0 && form.tags.split(',').map(tag => tag.trim()),
@@ -105,7 +107,7 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
     formData.append("crackFile", file);
     formData.append("crackImage", image);
     try {
-      const res = await fetch(`/api/crack/${form._id}`, {
+      const response = await fetch(`/api/crack/${form._id}`, {
         method: 'PUT',
         body: formData,
       });
@@ -115,10 +117,13 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
         return;
       }
 
+      router.push("/crack-dashboard/cracks");
       toast.success(data.message);
-      router.push("/crack-dashboard/crack");
     } catch (err) {
+      console.log(err)
       toast.error('Error updating crack');
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -161,7 +166,7 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
         <input 
           type="file" 
           onChange={(e) => setFile(e.target.files[0])} 
-          accept=".zip,.rar,.exe"
+          accept=".zip"
           className="rounded w-full bg-[#242e24] p-2"
         />
 
@@ -170,7 +175,7 @@ const AddCrack = ({ initialData, mode = 'add' }) => {
         <input name="details.download.link_text" value={form.details.download.link_text} onChange={handleDetailsChange} placeholder="Download Link Text" className="rounded w-full bg-[#242e24] p-2" />
         <input name="details.download.password" value={form.details.download.password} onChange={handleDetailsChange} placeholder="Password" className="rounded w-full bg-[#242e24] p-2" />
 
-        <button type="submit" className="bg-green-700 py-2 px-4 rounded hover:bg-green-600">Submit</button>
+        {loading?<p className='bg-green-700 py-2 px-4 rounded hover:bg-green-600'>Submiting ...</p>:<button type="submit" className="bg-green-700 py-2 px-4 rounded hover:bg-green-600">Submit</button>}
       </form>
     </div>
   );

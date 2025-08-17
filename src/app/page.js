@@ -1,40 +1,21 @@
 'use client'
 import Footer from "@/component/Footer";
 import Header from "@/component/Header"
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 export default function Home() {
-  const Categories = ["Downloader" ,"File Extractor", "PC" , "Utility" , "Uninstaller" ]
   const router = useRouter();
-  const [cracks , setCracks]= useState([]);
-  const [loading , setLoading] = useState(true);
+  const {cracksLoading , cracks} = useAuth()
   
-  useEffect(() => {
-    const fetchCracks = async () => {
-      try {
-        const res = await fetch('/api/crack');
-        if(res.ok){
-          const data = await res.json();
-        console.log(data)
-        setCracks(data);
-        }
-      } catch (err) {
-        console.error('Error fetching cracks:', err);
-      }finally{
-        setLoading(false)
-      }
-    };
-    fetchCracks();
-  },[])
   
   return (
     <div className="flex flex-col items-center bg-[#181D14] text-white  ">
       <Header />
       <div className="flex gap-6   w-[1200px] py-5">
       {
-      loading?
+      cracksLoading?
       <p className="h-[110px] font-bold">loading ...</p>
       :
       <>
@@ -42,7 +23,7 @@ export default function Home() {
         <div className="flex flex-col gap-6 w-[60%]">
           <h1 className="text-3xl font-bold">All Cracks</h1>
         {cracks?.map((item) => (
-        <div key={item._id} className="p-4   h-[250px] rounded bg-[#232e24]" >
+        <div key={item._id} className="p-4 rounded bg-[#232e24]" >
           <h2 className="text-xl font-bold mt-2  ">{item.title}</h2>
           <p className="text-sm  text-[#a0a0a0] py-2">{item.date} • {item.reviews.length} comments</p>
           <div >
@@ -51,7 +32,7 @@ export default function Home() {
             <p className="mt-2  text-[#a0a0a0] ">{item.shortDescription.length > 150 ? item.shortDescription.slice(0, 150)+'...' : item.shortDescription} </p>
             </div>
             <div className="flex justify-end">
-              <button className="px-5 py-2 rounded bg-[#181D14] cursor-pointer" onClick={()=> router.push(`/software/${item.id}`)}>Read More</button>
+              <button className="px-5 py-2 rounded bg-[#181D14] cursor-pointer" onClick={()=> router.push(`/software/${item._id}`)}>Read More</button>
             </div>
           </div>
         </div>

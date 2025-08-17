@@ -6,11 +6,11 @@ import { connectDB } from '@/dbConfig/dbConfig';
 export async function POST(request ,  { params }){
     try {
         await connectDB();
-        const {id} = await params;
-        const {username , email , comment} = await request.body();
+        const { id } = await params; 
+        const { username, email, comment } = await request.json(); 
 
         if(!email || !comment){
-            return NextResponse({error : "Make sure all field are provide" }, {status: 404})
+            return new NextResponse({error : "Make sure all field are provide" }, {status: 404})
         }
 
         const crack = await Crack.findById(id);
@@ -24,11 +24,11 @@ export async function POST(request ,  { params }){
         await crack.save();
         await newReview.save();
 
-        return NextResponse.json({success: true , message: "comment successfully"} , {status: 200})
+        return  NextResponse.json({success: true ,review:newReview , message: "comment successfully"} , {status: 200})
     } catch (error) {
-        console.error(err);
-        return NextResponse.json(
-            { error: "Server error" , detail: err},
+        console.error(error);
+        return  NextResponse.json(
+            { error: "Server error" , detail: error},
             { status: 500 }
         );
     }

@@ -120,7 +120,7 @@ const AddCrack = () => {
         body: formData,
       });
       const data = res.json();
-      if (!response.ok) {
+      if (!res.ok) {
         toast.error(data.error);
         return;
       }
@@ -174,7 +174,7 @@ const AddCrack = () => {
           <input 
             type="file" 
             onChange={(e) => setFile(e.target.files[0])} 
-            accept=".zip,.rar,.exe"
+            accept=".zip"
             className="rounded w-full bg-[#242e24] p-2"
           />
 

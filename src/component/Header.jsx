@@ -1,14 +1,13 @@
 import React from 'react'
 import logo from '../../public/crack_Logo.png'
-// #4c4c4f //gray
-// #cf9e91 //cream
-// #749c94 //green
 import Image from 'next/image'
 import { FaSearch } from "react-icons/fa"
 import data from "@/data/cracksSoftwares"
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
-    const navList = [{page:'Home' , path: '/'},{page:'Contact Us' , path: '/contactus'},]
+    const router = useRouter();
+    const navList = [{page:'Home' , path: '/'},{page:'Contact Us' , path: '/contact-us'},]
   return (
     <div className='bg-[#181D14] w-full flex flex-col items-center  justify-center text-white '>
         <div className='bg-[#232e24]  w-full overflow-hidden'>
@@ -33,7 +32,7 @@ const Header = () => {
         <nav className='flex gap-5 '>
             {
                 navList?.map((element , index) =>
-                <li className='list-none font-semibold ' key={index}>
+                <li className='list-none font-semibold cursor-pointer' onClick={()=> router.push(element.path)} key={index}>
                     {element.page}
                 </li>
                 )
