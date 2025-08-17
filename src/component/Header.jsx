@@ -1,4 +1,4 @@
-import React from 'react'
+"use client"
 import logo from '../../public/crack_Logo.png'
 import Image from 'next/image'
 import { FaSearch } from "react-icons/fa"

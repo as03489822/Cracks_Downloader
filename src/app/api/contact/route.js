@@ -3,26 +3,25 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { email, text } = body;
+    const { email, text , subject } = await req.json();
 
-    if (!email || !text) {
+    if (!email || !text || !subject) {
       return NextResponse.json(
-        { success: false, message: "Email and message are required" },
+        { success: false, error: "Email and message are required" },
         { status: 400 }
       );
     }
 
-    await sendEmail ({email , text})
+    await sendEmail ({email , text , subject})
 
     return NextResponse.json(
-      { success: true, message: "Message sent successfully", info },
+      { success: true, message: "Message sent successfully" },
       { status: 200 }
     );
   } catch (error) {
     console.error("Contact API Error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to send message", error: error.message },
+      { success: false, error: "Failed to send message", error: error.message },
       { status: 500 }
     );
   }

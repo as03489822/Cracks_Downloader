@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const sendEmail = async({email , text })=>{
+export const sendEmail = async({email , text , subject })=>{
     try {
         const transport = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
@@ -10,18 +10,18 @@ export const sendEmail = async({email , text })=>{
             pass: process.env.NODEMAILER_PASSWORD
         }
         });
-        const mailOptions = await transporter.sendMail({
+        const mailOptions = {
             from: email,
             to: "as03489822@gmail.com",
-            subject: "Contect Us",
-            text: text, 
-            // html: "<b>Hello world?</b>", // HTML body
-        });
+            subject: subject,
+            text: text,
+            // html: "<b>Hello world?</b>", // Optional HTML body
+        };
 
         const mailResponse = await transport.sendMail(mailOptions);
         return mailResponse;
-        
     } catch (error) {
+        console.log(error)
         throw new Error(error.message)
     }
 }

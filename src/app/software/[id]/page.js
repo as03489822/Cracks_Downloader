@@ -1,4 +1,5 @@
 'use client'
+
 import { useParams } from 'next/navigation';
 import Footer from "@/component/Footer";
 import Header from "@/component/Header"
@@ -107,7 +108,7 @@ const SoftwareDetail = () => {
                 )
               }
             </ul>
-            <a className='text-[20px] text-blue-500 underline pt-8' href={`${software.crackFileUrl}`} download>
+            <a className='text-[20px] text-blue-500 underline pt-8' href={`${software.crackFileUrl}`} download={true} >
               {software.details.download.link_text}
             </a>
             {/* <h3 className='text-[19px] text-red-500 '>Password = {software.details.download.password}</h3> */}
@@ -139,7 +140,7 @@ const SoftwareDetail = () => {
               <textarea name='comment' value={review.comment} onChange={handleChange} className=' bg-[#181D14] w-full outline-none p-2 rounded' placeholder='Comment ... '  rows={6} required></textarea>
               <input name='username' value={review.username} onChange={handleChange} placeholder='Your name *' type='text' className=' w-full bg-[#181D14] outline-none px-2 py-1 rounded' required />
               <input name='email' value={review.email} onChange={handleChange} placeholder='E-mail *' type='email' className=' w-full bg-[#181D14] outline-none px-2 py-1 rounded' required />
-              {loading?<p className='bg-blue-400 rounded py-2 px-5 cursor-crosshair'>Sending ...</p>:<button type='submit' className='bg-blue-400 rounded py-2 px-5'>Post Comment</button>}
+              {loading?<p className='bg-green-700 rounded py-2 px-5 cursor-crosshair'>Sending ...</p>:<button type='submit' className='bg-green-700 rounded py-2 px-5'>Post Comment</button>}
             </form> 
           </div>
         </div>
